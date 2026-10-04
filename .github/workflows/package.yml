@@ -1,57 +1,25 @@
-name: Build CAP v0.3 public package
+name: Verify CAP v0.3 canonical artefacts
 
 on:
   push:
     branches: [main]
-    paths-ignore:
-      - 'CAP_v0.3_2026-10-04_PUBLICO.zip'
-      - 'CAP_v0.3_2026-10-04_PUBLICO.zip.sha256'
-      - 'SHA256SUMS.txt'
+    paths:
+      - 'CAP_v0.3_2026-10-04_PUBLICO_FINAL.zip'
+      - 'CAP_v0.3_2026-10-04_PUBLICO_FINAL.zip.sha256'
+      - 'CAP_v0.3_2026-10-04_PUBLICO_FINAL_ptc_frs01.zip'
+      - 'CAP_v0.3_2026-10-04_PUBLICO_FINAL_ptc_frs01.zip.sha256'
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  package:
+  verify:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Build deterministic public ZIP
+      - uses: actions/checkout@v4
+      - name: Verify canonical artefact hashes
         shell: bash
         run: |
           set -euo pipefail
-          rm -rf _package
-          mkdir -p _package/experimentos
-
-          cp README.md activacion.md contexto.md log.md futuro.md CHANGELOG.md PUBLICACION.md CITATION.cff LICENSE.md _package/
-          cp experimentos/CAP-R_v0.2.md _package/experimentos/
-
-          (
-            cd _package
-            sha256sum README.md activacion.md contexto.md log.md futuro.md CHANGELOG.md PUBLICACION.md CITATION.cff LICENSE.md experimentos/CAP-R_v0.2.md > SHA256SUMS.txt
-          )
-
-          find _package -type f -exec touch -t 202610041200 {} +
-          (
-            cd _package
-            zip -X -q -r ../CAP_v0.3_2026-10-04_PUBLICO.zip .
-          )
-
-          sha256sum CAP_v0.3_2026-10-04_PUBLICO.zip > CAP_v0.3_2026-10-04_PUBLICO.zip.sha256
-          cp _package/SHA256SUMS.txt SHA256SUMS.txt
-
-      - name: Commit generated package
-        shell: bash
-        run: |
-          set -euo pipefail
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add CAP_v0.3_2026-10-04_PUBLICO.zip CAP_v0.3_2026-10-04_PUBLICO.zip.sha256 SHA256SUMS.txt
-          if git diff --cached --quiet; then
-            echo "No generated changes."
-          else
-            git commit -m "Build frozen CAP v0.3 public package"
-            git push
-          fi
+          sha256sum -c CAP_v0.3_2026-10-04_PUBLICO_FINAL.zip.sha256
+          sha256sum -c CAP_v0.3_2026-10-04_PUBLICO_FINAL_ptc_frs01.zip.sha256
