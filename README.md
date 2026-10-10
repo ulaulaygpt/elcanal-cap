@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/brand/cap-banner.png" alt="CAP — Canal Activation Protocol" width="100%">
+</p>
+
 # CAP v0.3 — Canal Activation Protocol
 ## Edición pública · 2026-10-04
 
