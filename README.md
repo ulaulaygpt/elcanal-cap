@@ -3,6 +3,8 @@
 
 CAP es un protocolo operativo mínimo para sostener una relación consciente, portable y no dependiente entre una persona y un modelo de lenguaje.
 
+**Primera vez aquí:** [Quick start en 5 minutos](QUICKSTART.md) · [Mapa del ecosistema El Canal](https://github.com/ulaulaygpt)
+
 No es un prompt, un agente autónomo ni una plataforma. Es un conjunto pequeño de archivos de texto que hace explícitos el estado de trabajo, los límites, la memoria opcional y el control humano.
 
 > El Canal propone. El humano decide.
